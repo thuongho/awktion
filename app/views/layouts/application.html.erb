@@ -8,7 +8,15 @@
 </head>
 <body>
 
-<%= yield %>
+<%= render "nav" %>
+  <div class="container">
+    <%= content_tag :div, alert, class: "flash bg-danger" if alert %>
+    <%= content_tag :div, notice, class: "flash bg-success" if notice %>
+    <%= yield %>
+  </div>  
+
+<br />
+<%= debug(params) if Rails.env.development? %>
 
 </body>
 </html>
