@@ -1,25 +1,28 @@
 -if @product.has_auction?
-  / display if a user logs in and the user doesn't hold the product and if there is an existing auction
-  =form_for [ @product, @product.auction, Bid.new ] do |f|
-    / need to know top bid
-    %p
-      %strong
-        -if @product.auction.top_bid.user_id == current_user.id
-          Current bid:
-          / relate top bid to auction
-          =@product.auction.current_bid
-        -else
-          You were outbid:
-          / if outbidded, post the current bid
-          =@product.auction.current_bid
+  -if @product.auction.ended?
+    =render "auctions/status"
+  -else
+    / display if a user logs in and the user doesn't hold the product and if there is an existing auction
+    =form_for [ @product, @product.auction, Bid.new ] do |f|
+      / need to know top bid
+      %p
+        %strong
+          -if @product.auction.top_bid.user_id == current_user.id
+            Current bid:
+            / relate top bid to auction
+            =@product.auction.current_bid
+          -else
+            You were outbidded:
+            / if outbidded, post the current bid
+            =@product.auction.current_bid
 
-    / stringftime short
-    / localize or l for short - resorts to internationalization
-    / takes a timestamp and format option
-    %p
-      Ends at: #{l(@product.auction.ends_at, format: :short)} 
+      / stringftime short
+      / localize or l for short - resorts to internationalization
+      / takes a timestamp and format option
+      %p
+        Ends at: #{l(@product.auction.ends_at, format: :short)} 
 
-    / mechanism for users to submit a new bid
-    %p
-      =f.text_field :value
-      =f.button class: "btn btn-primary"
+      / mechanism for users to submit a new bid
+      %p
+        =f.text_field :value
+        =f.button class: "btn btn-primary"
