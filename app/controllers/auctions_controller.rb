@@ -1,13 +1,13 @@
 class AuctionsController <  ApplicationController
   def create
-    @product = Product.find params[:product_id]
-    # pass in the auctions param and then merge in the product id
-    @auction = Auction.new auction_params.merge! product_id: :product.id
+    product = Product.find params[:product_id]
+    # use merge to join product id into the auction_params hash
+    auction = Auction.new auction_params.merge! product_id: product.id
 
     if auction.save
-      redirect_to @product, notice: "Product was put to auction"
+      redirect_to product, notice: "Product was put to auction."
     else
-      redirect_to @product, alert: "Something went wrong, please review your data"
+      redirect_to product, alert: "Something went wrong, please review your data."
     end
   end
 
