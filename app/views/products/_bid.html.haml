@@ -9,8 +9,10 @@
         =@product.auction.current_bid
 
     / stringftime short
+    / localize or l for short - resorts to internationalization
+    / takes a timestamp and format option
     %p
-      Ends at: #{@product.auction.ends_at.strftime(:short)} 
+      Ends at: #{l(@product.auction.ends_at, format: :short)} 
 
     / mechanism for users to submit a new bid
     %p
