@@ -4,9 +4,14 @@
     / need to know top bid
     %p
       %strong
-        Current bid:
-        / relate top bid to auction
-        =@product.auction.current_bid
+        -if @product.auction.top_bid.user_id == current_user.id
+          Current bid:
+          / relate top bid to auction
+          =@product.auction.current_bid
+        -else
+          You were outbid:
+          / if outbidded, post the current bid
+          =@product.auction.current_bid
 
     / stringftime short
     / localize or l for short - resorts to internationalization
