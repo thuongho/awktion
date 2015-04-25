@@ -1,7 +1,7 @@
 # a class to make sure that new bids are not less than current bid
 class PlaceBid
   def initialize options
-    @value = options[:value]
+    @value = options[:value].to_f
     @user_id = options[:user_id]
     @auction_id = options[:auction_id]
   end
