@@ -1,22 +1,20 @@
 require "test_helper"
 
 class PlaceBidTest < MiniTest::Test
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
+  def test_it_places_a_bid
+    user = User.create! email "sample@awktion.com", password: "password"
+    another_user = User.create! email: "another_user@awktion.com", password: "password"
+    product = Product.create! name: "Some Product"
+    auction = Auction.create! value: 10, product_id: product.id
 
-  # Add more helper methods to be used by all tests here...
-end
+    # placing the bid
+    # instantiate a new service to place bid
+    # insert a new bid value, attach to the user id of another user, and add auction id
+    service = PlaceBid.new value: 11, user_id: another_user, auction_id: auction.id
 
-DatabaseCleaner.strategy = :truncation
+    service.execute
 
-
-class MiniTest::Test
-  def setup
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-    Timecop.return
+    # let's say we want to bid 1 dollar above the auction value
+    assert_equal 11, auction.current_bid
   end
 end
