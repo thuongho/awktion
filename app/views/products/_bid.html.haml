@@ -1,13 +1,14 @@
-/ display if a user logs in and the user doesn't hold the product and if there is an existing auction
-=form_for [ @product, @product.auction, Bid.new ] do |f|
-  / need to know top bid
-  %p
-    %strong
-      Current bid:
-      / relate top bid to auction
-      =@product.auction.current_bid
+-if @product.has_auction?
+  / display if a user logs in and the user doesn't hold the product and if there is an existing auction
+  =form_for [ @product, @product.auction, Bid.new ] do |f|
+    / need to know top bid
+    %p
+      %strong
+        Current bid:
+        / relate top bid to auction
+        =@product.auction.current_bid
 
-  / mechanism for users to submit a new bid
-  %p
-    =f.text_field :value
-    =f.button
+    / mechanism for users to submit a new bid
+    %p
+      =f.text_field :value
+      =f.button
