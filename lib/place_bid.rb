@@ -1,5 +1,8 @@
 # a class to make sure that new bids are not less than current bid
 class PlaceBid
+  # makes that auction variable public to the outside
+  attr_reader :auction
+
   def initialize options
     @value = options[:value].to_f
     @user_id = options[:user_id]
@@ -8,7 +11,8 @@ class PlaceBid
 
   def execute
     # find the auction by the auction id
-    auction = Auction.find @auction_id
+    # instance variable to make it avail
+    @auction = Auction.find @auction_id
 
     # prevent the bid object to be created if value is less than current bid
     if @value <= auction.current_bid

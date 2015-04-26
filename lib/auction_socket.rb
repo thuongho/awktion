@@ -69,8 +69,13 @@ class AuctionSocket
       value: tokens[2]
     )
 
-    service.execute
-
-    socket.send "bidok"
+    # add logic to bidding
+    if service.execute
+      socket.send "bidok"
+    else
+      # in the auction_websocketjs we have value being pass, so include that to update the bid value
+      # socket.send "underbid #{tokens[2]}"
+      socket.send "underbid #{service.auction.current_bid}"
+    end
   end
 end
