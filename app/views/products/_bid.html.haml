@@ -1,20 +1,25 @@
 -if @product.has_auction?
   -if @product.auction.ended?
     =render "auctions/status"
+
   -else
     / display if a user logs in and the user doesn't hold the product and if there is an existing auction
     =form_for [ @product, @product.auction, Bid.new ] do |f|
       / need to know top bid
       %p
         %strong
-          -if @product.auction.top_bid.user_id == current_user.id
-            Current bid:
-            / relate top bid to auction
-            =@product.auction.current_bid
+          -if @product.auction.top_bid.present?
+            -if @product.auction.top_bid.user_id == current_user.id
+              Current bid:
+            -else
+              You were outbidded:
+              / if outbidded, post the current bid
+              =@product.auction.current_bid
           -else
-            You were outbidded:
-            / if outbidded, post the current bid
-            =@product.auction.current_bid
+            Current bid:
+
+          / relate top bid to auction
+          =@product.auction.current_bid
 
       / stringftime short
       / localize or l for short - resorts to internationalization
@@ -26,3 +31,19 @@
       %p
         =f.text_field :value
         =f.button class: "btn btn-primary"
+
+  :javascript
+    // initiate websocket object
+    // jQuery function wrapper that is run at the end of the page
+    // once the entire page is loaded, it will create that socket object
+    $(function() {
+      var user_id = "#{current_user.id}";
+      var auction_id = "#{@product.auction.id}";
+      var form = $("#new_bid");
+
+      var auctionSocket = new AuctionSocket(
+        user_id,
+        auction_id,
+        form
+      );
+    });
