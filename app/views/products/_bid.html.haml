@@ -13,12 +13,10 @@
               Current bid:
             -else
               You were outbidded:
-              / if outbidded, post the current bid
-              =@product.auction.current_bid
           -else
             Current bid:
 
-          / relate top bid to auction
+          / if outbidded, post the current bid
           =@product.auction.current_bid
 
       / stringftime short
