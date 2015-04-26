@@ -1,4 +1,7 @@
 -if @product.auction.top_bid.user_id == current_user.id
   %p You won the auction!
+  / only user that won the product can see claim
+  %p
+    =link_to "Claim this product", transfer_product_path(@product), class: "btn btn-primary"
 -else
   %p You lost the auction.
