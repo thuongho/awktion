@@ -5,8 +5,8 @@ class PlaceBid
 
   def initialize options
     @value = options[:value].to_f
-    @user_id = options[:user_id]
-    @auction_id = options[:auction_id]
+    @user_id = options[:user_id].to_i
+    @auction_id = options[:auction_id].to_i
   end
 
   def execute
@@ -14,7 +14,10 @@ class PlaceBid
     # instance variable to make it avail
     @auction = Auction.find @auction_id
 
-    if auction.ended?
+    # debugging - make sure that code below desn't execute
+    # binding.pry
+    # add status to end of auction
+    if auction.ended? && auction.top_bid.user_id == @user_id
       @status = :won
       return false
     end

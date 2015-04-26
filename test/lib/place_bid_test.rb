@@ -7,7 +7,7 @@ class PlaceBidTest < MiniTest::Test
     @user = User.create! email: "sample@awktion.com", password: "password"
     @another_user = User.create! email: "another_user@awktion.com", password: "password"
     @product = Product.create! name: "Some Product"
-    @auction = Auction.create! value: 10, product_id: product.id
+    @auction = Auction.create! value: 10, product_id: product.id, ends_at: Time.now + 24.hours
   end
 
   def test_it_places_a_bid
@@ -42,7 +42,7 @@ class PlaceBidTest < MiniTest::Test
   def test_notifies_if_auction_has_won
     service = PlaceBid.new(
       value: 15,
-      user_id: another_user.id,
+      user_id: user.id,
       auction_id: auction.id
     )
 
@@ -50,13 +50,16 @@ class PlaceBidTest < MiniTest::Test
 
     another_service = PlaceBid.new(
       value: 9000,
-      user_id: another_user.id,
+      user_id: user.id,
       auction_id: auction.id
     )
 
+    # use Timecop to make auction ended
+    Timecop.travel(Time.now + 25.hours)
+    # make sure service executes after the auction expired
     another_service.execute
-
-    assert_equal service.status, :won
+    # expect won, got result from another_service.status (refer to place_bid for won)
+    assert_equal :won, another_service.status
   end
 
   private

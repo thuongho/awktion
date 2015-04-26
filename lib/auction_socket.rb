@@ -79,9 +79,14 @@ class AuctionSocket
       socket.send "bidok"
       notify_outbids socket, tokens[2]
     else
-      # in the auction_websocketjs we have value being pass, so include that to update the bid value
-      # socket.send "underbid #{tokens[2]}"
-      socket.send "underbid #{service.auction.current_bid}"
+      if service.status == :won
+        # pass in socket because we want to notify the winner and the rest lost
+        notify_auction_ended socket
+      else
+        # in the auction_websocketjs we have value being pass, so include that to update the bid value
+        # socket.send "underbid #{tokens[2]}"
+        socket.send "underbid #{service.auction.current_bid}"
+      end
     end
   end
 
@@ -89,6 +94,13 @@ class AuctionSocket
     # the client that match our socket, we are going to reject
     @clients.reject { |client| client == socket }.each do |client|
       client.send "outbid #{value}"
+    end
+  end
+
+  def notify_auction_ended socket
+    socket.send "won"
+    @clients.reject { |client| client == socket }.each do |client|
+      client.send "lost"
     end
   end
 end
