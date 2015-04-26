@@ -39,6 +39,26 @@ class PlaceBidTest < MiniTest::Test
     refute service.execute, "Your bid is below the current bid."
   end
 
+  def test_notifies_if_auction_has_won
+    service = PlaceBid.new(
+      value: 15,
+      user_id: another_user.id,
+      auction_id: auction.id
+    )
+
+    service.execute
+
+    another_service = PlaceBid.new(
+      value: 9000,
+      user_id: another_user.id,
+      auction_id: auction.id
+    )
+
+    another_service.execute
+
+    assert_equal service.status, :won
+  end
+
   private
 
   # make sure the variables in setup are publicly avail
