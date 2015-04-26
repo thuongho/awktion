@@ -8,6 +8,7 @@ var AuctionSocket = function(user_id, auction_id, form) {
   this.socket = new WebSocket(...);
 };
 
+// method sends bid to socket and nothing else
 AuctionSocket.sendBid = function(value) {
   this.value = value;
   var template = "bid {{auction_id}} {{user_id}} {{value}}";
@@ -18,7 +19,7 @@ AuctionSocket.sendBid = function(value) {
     auction_id: this.auction_id,
     value: value
   }));
-}
+};
 
 // bidok
 // outbid value
