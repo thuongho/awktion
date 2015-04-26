@@ -10,3 +10,13 @@
 / form to create new auction
 =render "auction"
 =render "bid"
+
+/ ws part of websocket interface
+/ host is the test, dev, production
+/ port is the port we are on
+/ ws://localhost:3000
+/ request this url in the auction_websocketsjs
+:javascript
+  App = {
+    websocket_url: "ws://#{request.host}:#{request.port}";
+  };
