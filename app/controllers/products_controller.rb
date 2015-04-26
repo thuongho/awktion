@@ -34,6 +34,20 @@ class ProductsController < ApplicationController
     respond_with(@product)
   end
 
+  def transfer
+    # only id in params because only have id in the route
+    product = Product.find params[:id]
+
+    # only transfer if the auction ended.
+    if product.auction.ended?
+      product.update_attribute :user_id, product.auction.top_bid.user_id
+      # product is the same as product_path
+      redirect_to product, notice: "Successfully transferred the product."
+    else
+      redirect_to product, alert: "The auction hasn't ended yet."
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product

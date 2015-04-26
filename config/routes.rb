@@ -4,6 +4,11 @@ Rails.application.routes.draw do
     resources :auctions, only: [ :create ] do 
       resources :bids, only: [ :create ]
     end
+    # add a new route to support transferring product to new user id (winner)
+    member do 
+      # using puts route to update an existing product
+      put :transfer
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
