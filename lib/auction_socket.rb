@@ -92,15 +92,19 @@ class AuctionSocket
 
   def notify_outbids socket, value
     # the client that match our socket, we are going to reject
-    @clients.reject { |client| client == socket }.each do |client|
+    @clients.reject { |client| client == socket || !same_auction?(client,socket)}.each do |client|
       client.send "outbid #{value}"
     end
   end
 
   def notify_auction_ended socket
     socket.send "won"
-    @clients.reject { |client| client == socket }.each do |client|
+    @clients.reject { |client| client == socket || !same_auction?(client,socket)}.each do |client|
       client.send "lost"
     end
+  end
+
+  def same_auction? other_socket, socket
+    other_socket.env["REQUEST_PATH"] == socket.env["REQUEST_PATH"]
   end
 end
