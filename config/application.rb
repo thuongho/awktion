@@ -1,4 +1,6 @@
 require File.expand_path('../boot', __FILE__)
+# require middleware by hand
+require File.expand_path('../../lib/auction_socket', __FILE__)
 
 require 'rails/all'
 
@@ -23,5 +25,8 @@ module Awktion
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.sass.preferred_syntax = :sass
+    # tell it to use lib/auction_socket
+    config.middleware.use AuctionSocket
+    # rake middleware will show all the middleware being used
   end
 end

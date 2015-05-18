@@ -11,6 +11,7 @@ end
 
 DatabaseCleaner.strategy = :truncation
 
+# extend MiniTest::Test with the features below
 class MiniTest::Test
   def setup
     DatabaseCleaner.start
@@ -18,6 +19,6 @@ class MiniTest::Test
 
   def teardown
     DatabaseCleaner.clean
-    Timecop.return  #
+    Timecop.return 
   end
 end

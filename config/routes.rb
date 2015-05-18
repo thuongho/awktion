@@ -1,9 +1,20 @@
 Rails.application.routes.draw do
+  devise_for :users
+  resources :products do
+    resources :auctions, only: [ :create ] do 
+      resources :bids, only: [ :create ]
+    end
+    # add a new route to support transferring product to new user id (winner)
+    member do 
+      # using puts route to update an existing product
+      put :transfer
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'products#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

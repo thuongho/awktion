@@ -1,0 +1,22 @@
+%h1= @product.name
+%p
+  = image_tag @product.image, width: '50%', height: '50%'
+
+%p
+  = link_to 'Edit', edit_product_path(@product)
+  \|
+  = link_to 'Back', products_path
+
+/ form to create new auction
+=render "auction"
+=render "bid"
+
+/ ws part of websocket interface
+/ host is the test, dev, production
+/ port is the port we are on
+/ ws://localhost:3000
+/ request this url in the auction_websocketsjs
+:javascript
+  App = {
+    websocket_url: "ws://#{request.host}:#{request.port}/"
+  };
